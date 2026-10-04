@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Supaplex replays</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #111;
+        color: #ddd;
+        font: 14px/1.5 ui-monospace, monospace;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+      canvas {
+        display: block;
+        margin: 12px 0;
+        image-rendering: pixelated;
+      }
+      #bar {
+        width: 960px;
+        max-width: 100%;
+      }
+    </style>
+    <!-- After `npm run build`, the package from this checkout. In a project
+         of your own, npm install @zeybek/supaplex and import it as here. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@zeybek/supaplex": "../../dist/index.js",
+          "@zeybek/supaplex/canvas": "../../dist/canvas.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <select id="demos"></select>
+      or a .SP file <input id="file" type="file" accept=".sp,.SP,.bin,.BIN" />
+    </div>
+    <div>
+      <button id="play" type="button">Pause</button>
+      <select id="speed">
+        <option value="1">1x</option>
+        <option value="2">2x</option>
+        <option value="4">4x</option>
+        <option value="8">8x</option>
+      </select>
+      <span id="status"></span>
+    </div>
+    <div id="message"></div>
+    <canvas id="field"></canvas>
+    <input id="bar" type="range" min="0" value="0" />
+    <div>
+      Space pauses. The arrows go back or on a tick, with Shift a second.
+      Drag the bar to go anywhere.
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

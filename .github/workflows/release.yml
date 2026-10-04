@@ -1,0 +1,76 @@
+# On main the checks run first, then release-please, which publishes to npm
+# (trusted publishing, no token) when its release pull request is merged.
+# GitHub runs no checks on that pull request, made with the workflow's token,
+# so they run here, before anything is published.
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  LEFTHOOK: "0"
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    name: Release
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+
+      - uses: actions/checkout@v7
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: actions/setup-node@v7
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm publish
+        if: ${{ steps.release.outputs.release_created }}
+
+  # The examples, live, on the package as it is on main.
+  pages:
+    name: Pages
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}examples/
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run site
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v5
+        id: deploy
+

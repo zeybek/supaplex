@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Supaplex sprites</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #111;
+        color: #ddd;
+        font: 14px/1.5 ui-monospace, monospace;
+      }
+      button {
+        font: inherit;
+      }
+      canvas {
+        display: block;
+        margin: 12px 0;
+        image-rendering: pixelated;
+      }
+    </style>
+    <!-- After `npm run build`, the package from this checkout. In a project
+         of your own, npm install @zeybek/supaplex and import it as here. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@zeybek/supaplex": "../../dist/index.js",
+          "@zeybek/supaplex/levels": "../../dist/levels.js",
+          "@zeybek/supaplex/canvas": "../../dist/canvas.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <button id="toggle" type="button">Draw with coloured shapes</button>
+      Arrows move, R restarts.
+    </div>
+    <canvas id="field"></canvas>
+    <div>
+      The sprite sheet, made in code by this page. Tile n is the piece whose
+      code is n, eight tiles to a row, 32 pixels a tile.
+    </div>
+    <canvas id="sheet"></canvas>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

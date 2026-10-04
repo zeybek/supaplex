@@ -1,0 +1,32 @@
+# Installed by `npm install`. Each commit runs the checks its files touch,
+# after rebuilding src/generated into the same commit when the sources changed.
+pre-commit:
+  piped: true
+  jobs:
+    - name: generate
+      glob: "{crates/core/src/**,crates/wasm/src/**,*.toml,Cargo.lock,data/LEVELS.DAT}"
+      run: npm run generate && git add src/generated
+    - group:
+        parallel: true
+        jobs:
+          - name: biome
+            glob: "*.{ts,js,json,jsonc,md}"
+            run: npx biome check --write --no-errors-on-unmatched {staged_files}
+            stage_fixed: true
+          - name: typecheck
+            glob: "*.ts"
+            run: npm run typecheck
+          - name: knip
+            glob: "*.{ts,js,json}"
+            run: npm run knip
+          - name: test
+            glob: "{src,scripts,test,data}/**"
+            run: npm test
+          - name: rust
+            glob: "{*.rs,*.toml,Cargo.lock}"
+            run: npm run rust:lint && npm run rust:test
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: npx commitlint --edit {1}

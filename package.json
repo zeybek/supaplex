@@ -1,0 +1,96 @@
+{
+  "name": "@zeybek/supaplex",
+  "version": "0.0.0",
+  "description": "Supaplex in 16 KB of WebAssembly, with what a game or a level editor of your own needs",
+  "keywords": [
+    "supaplex",
+    "game",
+    "game-engine",
+    "webassembly",
+    "wasm",
+    "rust",
+    "retro",
+    "puzzle"
+  ],
+  "homepage": "https://github.com/zeybek/supaplex#readme",
+  "bugs": "https://github.com/zeybek/supaplex/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeybek/supaplex.git"
+  },
+  "license": "MIT",
+  "author": "Ahmet Zeybek <me@zeybek.dev> (https://zeybek.dev)",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./levels": {
+      "types": "./dist/levels.d.ts",
+      "default": "./dist/levels.js"
+    },
+    "./canvas": {
+      "types": "./dist/canvas.d.ts",
+      "default": "./dist/canvas.js"
+    },
+    "./analysis": {
+      "types": "./dist/analysis.d.ts",
+      "default": "./dist/analysis.js"
+    },
+    "./engine.wasm": {
+      "types": "./dist/generated/engine.wasm.d.ts",
+      "default": "./dist/generated/engine.wasm"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "supaplex": "./dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "generate": "node scripts/generate.ts",
+    "site": "node scripts/site.ts",
+    "examples": "node scripts/examples.ts",
+    "typecheck": "tsc",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "knip": "knip",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "rust:test": "cargo test --release --workspace",
+    "rust:coverage": "cargo llvm-cov --workspace --ignore-filename-regex '(/tests/|/src/tests\\.rs$)' --fail-under-lines 100 --fail-under-regions 100 --fail-under-functions 100",
+    "rust:lint": "cargo fmt --all --check && cargo clippy --release --workspace --all-targets",
+    "package:check": "npm run build && publint && attw --pack . --profile esm-only",
+    "check": "npm run lint && npm run typecheck && npm run knip && npm run coverage && npm run rust:lint && npm run rust:coverage && npm run package:check && npm run examples",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@biomejs/biome": "^2.5.15",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@types/node": "^24.19.1",
+    "@vitest/coverage-v8": "^5.0.3",
+    "knip": "^6.39.0",
+    "lefthook": "^2.1.16",
+    "publint": "^0.3.25",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "allowScripts": {
+    "fsevents": false,
+    "lefthook": true
+  }
+}

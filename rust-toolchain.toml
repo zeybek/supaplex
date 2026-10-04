@@ -1,0 +1,6 @@
+# Pinned, so the committed module builds to the same bytes.
+[toolchain]
+channel = "1.99.0"
+components = ["clippy", "rustfmt", "llvm-tools"]
+targets = ["wasm32-unknown-unknown"]
+profile = "minimal"

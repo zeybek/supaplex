@@ -1,0 +1,32 @@
+name: Idea
+description: Something the package could do that it does not.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What it would do
+      description: And what you would make with it, such as a game, an editor, a site or a tool.
+    validations:
+      required: true
+  - type: dropdown
+    id: part
+    attributes:
+      label: Where it would go
+      description: The rules themselves stay the original's, and anything around them can grow.
+      options:
+        - "The engine, and what its state says"
+        - "Levels and files"
+        - "Runs and links"
+        - "Editor tools"
+        - "@zeybek/supaplex/canvas"
+        - "@zeybek/supaplex/analysis"
+        - "The supaplex command"
+        - "The examples"
+        - "Not sure"
+  - type: textarea
+    id: how
+    attributes:
+      label: How you would call it
+      description: The function or command you would like to write, if you know it.
+      render: ts

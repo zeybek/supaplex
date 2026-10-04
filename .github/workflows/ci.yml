@@ -1,0 +1,73 @@
+# On pull requests, and from release.yml before anything is released.
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # No git hooks in CI.
+  LEFTHOOK: "0"
+
+jobs:
+  typescript:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run knip
+      - run: npm run coverage
+      - run: npm run package:check
+      - run: npm run examples
+
+  node:
+    name: Tests on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The oldest Node in package.json's engines.
+        node: [22]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  rust:
+    name: Rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup toolchain install
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --release --workspace --all-targets
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
+      - run: npm run rust:coverage
+      # Coverage runs doc tests only on nightly.
+      - run: cargo test --release --workspace --doc
+      # The committed module must be what the sources build to.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/generate.ts
+      - run: git diff --exit-code -- src/generated

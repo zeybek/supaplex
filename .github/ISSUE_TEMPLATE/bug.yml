@@ -1,0 +1,44 @@
+name: Bug
+description: Something plays differently from the original game, or the package misbehaves.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: part
+    attributes:
+      label: Where
+      options:
+        - "The game, when something plays differently from the original"
+        - "The engine API (start, step, run, save states)"
+        - "Levels and files (.SP, .DAT, PLAYER.LST, HALLFAME.LST, pictures)"
+        - "Runs and links (verify, runs as text, sharedToHash, traces)"
+        - "Editor tools (paint, fill, regions, problems)"
+        - "@zeybek/supaplex/canvas (drawing, sprite sheets, keyboard, gamepads)"
+        - "@zeybek/supaplex/analysis"
+        - "The supaplex command"
+        - "The examples"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: And what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: game
+    attributes:
+      label: The game, to replay it
+      description: The engine is deterministic, so a level and its keys reproduce anything. Attach the `.SP` file, or paste a link fragment from `sharedToHash` or a run from `runToText`, and say on which tick it goes wrong. For a difference from the original, attach a `.SP` file whose demo the original game plays one way and this package another.
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Where it runs
+      placeholder: Chrome 140, Node 24, Cloudflare Workers

@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.wasm binary
+*.BIN binary
+*.DAT binary
+*.sp binary
+*.frames binary
+src/generated/** linguist-generated
+CHANGELOG.md linguist-generated

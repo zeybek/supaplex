@@ -1,0 +1,24 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT"
+repository = "https://github.com/zeybek/supaplex"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+
+# The smallest module.
+[profile.release]
+opt-level = "z"
+lto = true
+panic = "abort"
+codegen-units = 1
+strip = true

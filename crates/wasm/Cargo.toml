@@ -1,0 +1,18 @@
+[package]
+name = "supaplex-wasm"
+description = "The rules of Supaplex as a WebAssembly module, with per-cell arrays a renderer can draw"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+supaplex-core = { path = "../core" }
+
+[lints]
+workspace = true

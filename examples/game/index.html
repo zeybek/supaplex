@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Supaplex game</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #111;
+        color: #ddd;
+        font: 14px/1.5 ui-monospace, monospace;
+      }
+      canvas {
+        display: block;
+        margin: 12px 0;
+        image-rendering: pixelated;
+      }
+    </style>
+    <!-- After `npm run build`, the package from this checkout. In a project
+         of your own, npm install @zeybek/supaplex and import it as here. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@zeybek/supaplex": "../../dist/index.js",
+          "@zeybek/supaplex/levels": "../../dist/levels.js",
+          "@zeybek/supaplex/canvas": "../../dist/canvas.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="status"></div>
+    <canvas id="field"></canvas>
+    <div>Arrows (or a gamepad's d-pad and A) move, Space with an arrow snaps, Space alone drops a red disk.
+      R restarts, N and P change the level. <a href="../editor/" style="color: #9cf">Make a level</a>.</div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
