@@ -46,7 +46,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "supaplex": "./dist/bin.js"
+    "supaplex": "dist/bin.js"
   },
   "files": [
     "dist"
