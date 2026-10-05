@@ -1,6 +1,6 @@
 {
   "name": "@zeybek/supaplex",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Supaplex in 16 KB of WebAssembly, with what a game or a level editor of your own needs",
   "keywords": [
     "supaplex",
